@@ -1,0 +1,40 @@
+/*
+ * accionesCalculadora.h
+ *
+ *  Created on: 4 sep. 2021
+ *      Author: Juan Manuel Garcia
+ */
+
+#ifndef ACCIONESCALCULADORA_H_
+#define ACCIONESCALCULADORA_H_
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/// @brief Pide al usuario que ingrese un numero
+///
+/// @param mensaje - mensaje que se le muestra al usuario
+///
+/// @return numero ingresado por el usuario
+float PedirNumero(char mensaje[]);
+
+
+/// @brief Pide al usuario ingresar la opcion elejida y valida segun los parametros
+///
+/// @param minimo - rango minimo de las opciones posible
+/// @param maximo - rango maximo de las opciones posibles
+///
+/// @return opcion elejida por el usuario
+int PedirOpcion(int minimo, int maximo);
+
+
+/// @brief Devuelve 1 o 0 segun se pueda calcular el Factorial del numero
+///
+/// @param numero - numero al que se quiere verificar si se puede calcular el factorial
+///
+/// @return 1 o 0 segun corresponda
+char PuedoCalcularFactorial(float numero);
+
+
+
+#endif /* ACCIONESCALCULADORA_H_ */

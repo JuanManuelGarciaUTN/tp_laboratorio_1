@@ -8,11 +8,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "inputs.h"
 #include "determinarSiEs.h"
-
 
 int PedirEnteroValidado(char mensaje[], char mensajeError[], int* pEntero, int minimo, int maximo)
 {

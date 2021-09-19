@@ -1,0 +1,121 @@
+/*
+ * accionesCalculadora.c
+ *
+ *  Created on: 4 sep. 2021
+ *      Author: Juan Manuel Garcia
+ */
+
+
+#include "accionesCalculadora.h"
+
+
+void MostrarMenu(char flagIngresoOperandoUno, char flagIngresoOperandoDos, float numeroUno, float numeroDos)
+{
+	printf("Opciones: \n");
+
+	if(flagIngresoOperandoUno)
+	{
+		if(flagIngresoOperandoDos)
+		{
+			printf("1. Ingresar 1er operando (A = %.2f) \n"
+					"2. Ingresar 2do operando (B = %.2f) \n"
+					"3. Calcular: \n"
+					"	-La suma %.2f + %.2f \n"
+					"	-La resta %.2f - %.2f \n"
+					"	-La division %.2f / %.2f \n"
+					"	-La multiplicacion %.2f * %.2f \n"
+					"	-El factorial %.2f! \n"
+					"	-El factorail %.2f! \n"
+					"4. Mostrar Resultados \n"
+					"5. Salir del Programa \n\n", numeroUno, numeroDos);
+		}
+		else
+		{
+			printf("1. Ingresar 1er operando (A = %.2f) \n"
+					"2. Ingresar 2do operando (B = y) \n"
+					"3. Calcular: \n"
+					"	-La suma %.2f + B \n"
+					"	-La resta %.2f - B \n"
+					"	-La division %.2f / B \n"
+					"	-La multiplicacion %.2f * B \n"
+					"	-El factorial %.2f! \n"
+					"	-El factorail B! \n"
+					"4. Mostrar Resultados \n"
+					"5. Salir del Programa \n\n", numeroUno);
+		}
+	}
+	else
+	{
+		if(flagIngresoOperandoDos)
+		{
+			printf("1. Ingresar 1er operando (A = x) \n"
+					"2. Ingresar 2do operando (B = %.2f) \n"
+					"3. Calcular: \n"
+					"	-La suma A + %.2f \n"
+					"	-La resta A - %.2f \n"
+					"	-La division A / %.2f \n"
+					"	-La multiplicacion A * %.2f \n"
+					"	-El factorial A! \n"
+					"	-El factorail %.2f! \n"
+					"4. Mostrar Resultados \n"
+					"5. Salir del Programa \n\n", numeroDos);
+		}
+		else
+		{
+			printf("1. Ingresar 1er operando (A = x) \n"
+					"2. Ingresar 2do operando (B = y) \n"
+					"3. Calcular: \n"
+					"	-La suma A + B \n"
+					"	-La resta A - B \n"
+					"	-La division A / B \n"
+					"	-La multiplicacion A * B \n"
+					"	-El factorial A! \n"
+					"	-El factorail B! \n"
+					"4. Mostrar Resultados \n"
+					"5. Salir del Programa \n\n");
+		}
+	}
+}
+
+
+float PedirNumero(char mensaje[])
+{
+	float numeroIngresado;
+
+	printf("%s", mensaje);
+	scanf("%f", &numeroIngresado);
+
+	printf("\n");
+
+	return numeroIngresado;
+}
+
+int PedirOpcion(int minimo, int maximo)
+{
+	int opcionElejida;
+
+	printf("Ingrese accion a realizar: ");
+	scanf("%d", &opcionElejida);
+
+	while(opcionElejida < minimo || opcionElejida > maximo)
+	{
+		printf("Opcion Ingresada Invalida. \n"
+				"Vuelva a ingresar accion a realizar: ");
+		scanf("%d", &opcionElejida);
+	}
+
+	return opcionElejida;
+}
+
+char PuedoCalcularFactorial(float numero)
+{
+	char bool;
+	bool = 0;
+
+	if(numero >= 0 && numero - (int)numero == 0 )
+	{
+		bool = 1;
+	}
+
+	return bool;
+}

@@ -1,0 +1,110 @@
+/*
+ * accionesCalculadora.c
+ *
+ *  Created on: 4 sep. 2021
+ *      Author: Juan Manuel Garcia
+ */
+
+
+#include "accionesCalculadora.h"
+
+
+void MostrarMenu(char flagIngresoOperandoUno, char flagIngresoOperandoDos, float numeroUno, float numeroDos)
+{
+	printf("Opciones: \n");
+
+
+	if(flagIngresoOperandoUno)
+	{
+		if(flagIngresoOperandoDos)
+		{
+
+		}
+		else
+		{
+
+		}
+	}
+	else
+	{
+		if(flagIngresoOperandoDos)
+		{
+
+		}
+		else
+		{
+
+		}
+	}
+	if(flagIngresoOperandoUno)
+	{
+		printf("1. Ingresar 1er operando (A = %.2f) \n", numeroUno);
+	}
+	else
+	{
+		printf("1. Ingresar 1er operando (A = x) \n");
+	}
+
+	if(flagIngresoOperandoDos)
+	{
+		printf("2. Ingresar 2do operando (B = %.2f) \n", numeroDos);
+	}
+	else
+	{
+		printf("2. Ingresar 2do operando (B = x) \n");
+	}
+
+	printf("3. Calcular: \n"
+			"	-La suma A + B \n"
+			"	-La resta A - B \n"
+			"	-La division A / B \n"
+			"	-La multiplicacion A * B \n"
+			"	-El factorial A! \n"
+			"	-El factorail B! \n"
+			"4. Mostrar Resultados \n"
+			"5. Salir del Programa \n\n");
+
+}
+
+
+float PedirNumero(char mensaje[])
+{
+	float numeroIngresado;
+
+	printf("%s", mensaje);
+	scanf("%f", &numeroIngresado);
+
+	printf("\n");
+
+	return numeroIngresado;
+}
+
+int PedirOpcion(int minimo, int maximo)
+{
+	int opcionElejida;
+
+	printf("Ingrese accion a realizar: ");
+	scanf("%d", &opcionElejida);
+
+	while(opcionElejida < minimo || opcionElejida > maximo)
+	{
+		printf("Opcion Ingresada Invalida. \n"
+				"Vuelva a ingresar accion a realizar: ");
+		scanf("%d", &opcionElejida);
+	}
+
+	return opcionElejida;
+}
+
+char PuedoCalcularFactorial(float numero)
+{
+	char bool;
+	bool = 0;
+
+	if(numero >= 0 && numero - (int)numero == 0 )
+	{
+		bool = 1;
+	}
+
+	return bool;
+}

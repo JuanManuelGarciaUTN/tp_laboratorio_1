@@ -12,6 +12,7 @@
 
 #include "matematica.h"
 #include "accionesCalculadora.h"
+#include "inputs.h"
 
 int main(void) {
 	setbuf(stdout, NULL);
@@ -29,117 +30,90 @@ int main(void) {
 
 	int opcionElejida;
 
-	char boolIngresoOperandoUno;
-	char boolIngresoOperandoDos;
+	int flagIngresoOperandoUno;
+	int flagIngresoOperandoDos;
 
-	char boolCalculoResultados;
-	char boolCalculoDivision;
-	char boolCalculoFactorialA;
-	char boolCalculoFactorialB;
+	int flagCalculoResultados;
+	int flagCalculoDivision;
+	int flagCalculoFactorialA;
+	int flagCalculoFactorialB;
 
-	boolIngresoOperandoUno = 0;
-	boolIngresoOperandoDos = 0;
+	flagIngresoOperandoUno = 0;
+	flagIngresoOperandoDos = 0;
 
-	boolCalculoResultados = 0;
-	boolCalculoDivision = 0;
-	boolCalculoFactorialA = 0;
-	boolCalculoFactorialB = 0;
+	flagCalculoResultados = 0;
+	flagCalculoDivision = 0;
+	flagCalculoFactorialA = 0;
+	flagCalculoFactorialB = 0;
 
 	printf("Bienvenidos a la CALCULADORA \n\n");
-
 
 	do
 	{
 		//Mostrar Menu
-		printf("Opciones: \n");
-
-		if(boolIngresoOperandoUno)
-		{
-			printf("1. Ingresar 1er operando (A = %.2f) \n", numeroUno);
-		}
-		else
-		{
-			printf("1. Ingresar 1er operando (A = x) \n");
-		}
-
-		if(boolIngresoOperandoDos)
-		{
-			printf("2. Ingresar 2do operando (B = %.2f) \n", numeroDos);
-		}
-		else
-		{
-			printf("2. Ingresar 2do operando (B = x) \n");
-		}
-
-		printf("3. Calcular: \n"
-				"	-La suma A + B \n"
-				"	-La resta A - B \n"
-				"	-La division A / B \n"
-				"	-La multiplicacion A * B \n"
-				"	-El factorial A! \n"
-				"	-El factorail B! \n"
-				"4. Mostrar Resultados \n"
-				"5. Salir del Programa \n\n");
+		MostrarMenu(flagIngresoOperandoUno, flagIngresoOperandoDos, numeroUno, numeroDos);
 
 		//Pedir que el usuario elija una opcion
 
-		opcionElejida = PedirOpcion(1, 5);
+		PedirEnteroValidado("Ingrese la opcion a realizar: ", "ERROR. ingreso invalido. \n", &opcionElejida, 1, 5);
+		system("cls");
 
 		//continuar segun la opcion elejida por el usuario
 
 		switch(opcionElejida)
 		{
 			case 1:
-				system("cls");
 
-				numeroUno = PedirNumero("Ingrese el 1er operando: ");
-				boolIngresoOperandoUno = 1;
-				boolCalculoResultados = 0;
+				flagIngresoOperandoUno = PedirFloat("Ingrese el primer operando: ", "ERROR. Valor ingresado NO es un numero \n", &numeroUno);
+				flagCalculoResultados = 0;
 
 				system("cls");
 				printf("SE INGRESO EL 1er OPERANDO \n\n");
 				break;
 
 			case 2:
-				system("cls");
 
-				numeroDos = PedirNumero("Ingrese el 2do operando: ");
-				boolIngresoOperandoDos = 1;
-				boolCalculoResultados = 0;
+				flagIngresoOperandoDos = PedirFloat("Ingrese el segundo operando: ", "ERROR. Valor ingresado NO es un numero \n", &numeroDos);
+				flagCalculoResultados = 0;
 
 				system("cls");
 				printf("SE INGRESO EL 2do OPERANDO \n\n");
 				break;
 
 			case 3:
-				system("cls");
 
-				if(boolIngresoOperandoUno && boolIngresoOperandoDos)
+				if(flagIngresoOperandoUno && flagIngresoOperandoDos)
 				{
+					//Calculo suma
 					resultadoSuma = Sumar(numeroUno, numeroDos);
+
+					//Calculo resta
 					resultadoResta = Restar(numeroUno, numeroDos);
 
+					//Calculo division si es posible
 					if(numeroDos != 0)
 					{
 						resultadoDivision = Dividir(numeroUno, numeroDos);
-						boolCalculoDivision = 1;
+						flagCalculoDivision = 1;
 					}
 
+					//Calculo multiplicacion
 					resultadoMultiplicacion = Multiplicar(numeroUno, numeroDos);
 
+					//Calculo factorial si es posible
 					if(PuedoCalcularFactorial(numeroUno))
 					{
 						factorialA = Factorial(numeroUno);
-						boolCalculoFactorialA = 1;
+						flagCalculoFactorialA = 1;
 					}
 
 					if(PuedoCalcularFactorial(numeroDos))
 					{
 						factorialB = Factorial(numeroDos);
-						boolCalculoFactorialB = 1;
+						flagCalculoFactorialB = 1;
 					}
 
-					boolCalculoResultados = 1;
+					flagCalculoResultados = 1;
 					printf("SE REALIZARON LOS CALCULOS\n\n");
 				}
 				else
@@ -149,9 +123,8 @@ int main(void) {
 				break;
 
 			case 4:
-				system("cls");
 
-				if(boolCalculoResultados)
+				if(flagCalculoResultados)
 				{
 					printf("RESULTADOS: \n\n");
 					//Resultado Suma
@@ -161,7 +134,7 @@ int main(void) {
 					printf("La resta %.2f - %.2f es: %.2f \n", numeroUno, numeroDos, resultadoResta);
 
 					//Resultado Division
-					if(boolCalculoDivision)
+					if(flagCalculoDivision)
 					{
 						printf("La division %.2f / %.2f es: %.2f \n", numeroUno, numeroDos, resultadoDivision);
 					}
@@ -174,54 +147,70 @@ int main(void) {
 					printf("La multiplicacion %.2f * %.2f es: %.2f \n", numeroUno, numeroDos, resultadoMultiplicacion);
 
 					//Resultado Factorial A
-					if(boolCalculoFactorialA)
+
+					printf("El factorial de %.2f es: ", numeroUno);
+
+					if(flagCalculoFactorialA)
 					{
-						printf("El factorial %.2f es: %lu \n", numeroUno, factorialA);
+						printf("%lu \n", factorialA);
 					}
 					else
 					{
 						if(numeroUno < 0)
 						{
-							printf("El factorial de %.2f: No se puede calcular el factorial de un numero negativo \n" , numeroUno);
+							printf("No puede calcular el factorial de un numero negativo \n");
 						}
 						else
 						{
-							printf("El factorial de %.2f: No se puede calcular el factorial de un numero con decimales \n" , numeroUno);
+							if(numeroUno - (int)numeroUno == 0)
+							{
+								printf("La calculadora no puede calcular el factorial de un numero mayor a 12 \n");
+							}
+							else
+							{
+								printf("No puede calcular el factorial de un numero con decimales \n");
+							}
 						}
 					}
 
 					//Resultado Factorial B
-					if(boolCalculoFactorialB)
+					printf("El factorial de %.2f es: ", numeroDos);
+
+					if(flagCalculoFactorialB)
 					{
-						printf("El factorial %.2f es: %lu \n\n", numeroDos, factorialB);
+						printf("%lu \n\n", factorialB);
 					}
 					else
 					{
 						if(numeroDos < 0)
 						{
-							printf("El factorial de %.2f: No se puede calcular el factorial de un numero negativo \n\n" , numeroDos);
+							printf("No puede calcular el factorial de un numero negativo \n");
 						}
 						else
 						{
-							printf("El factorial de %.2f: No se puede calcular el factorial de un numero con decimales \n\n" , numeroDos);
+							if(numeroDos - (int)numeroDos == 0)
+							{
+								printf("La calculadora no puede calcular el factorial de un numero mayor a 12 \n");
+							}
+							else
+							{
+								printf("No puede calcular el factorial de un numero con decimales \n");
+							}
 						}
 					}
 
 
 					//Resetear Calculadora
-					boolIngresoOperandoUno = 0;
-					boolIngresoOperandoDos = 0;
+					flagIngresoOperandoUno = 0;
+					flagIngresoOperandoDos = 0;
 
-					boolCalculoResultados = 0;
-					boolCalculoDivision = 0;
-					boolCalculoFactorialA = 0;
-					boolCalculoFactorialB = 0;
+					flagCalculoResultados = 0;
+					flagCalculoDivision = 0;
+					flagCalculoFactorialA = 0;
+					flagCalculoFactorialB = 0;
 
-					//Mantener los resultados en pantalla hasta que el usuario desee
-					printf("Para volver al menu principal presione ENTER");
-					fflush(stdin);
-					getchar();
-					fflush(stdin);
+					//Mantener los resultados en pantalla hasta que el usuario presione Enter
+					PresioneEnterParaContinuar();
 					system("cls");
 
 				}

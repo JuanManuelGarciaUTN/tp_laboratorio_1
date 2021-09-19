@@ -11,21 +11,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/// @brief Pide al usuario que ingrese un numero
+
+/// @brief Muestra el menu de la calculadora variando si se ingresaron o no los operandos Uno y Dos
 ///
-/// @param mensaje - el mensaje que se le muestra al usuario
-///
-/// @return numero ingresado por el usuario
-float PedirNumero(char mensaje[]);
+/// @param flagIngresoOperandoUno - flag para determinar si se ingreso el operando Uno
+/// @param flagIngresoOperandoDos - flag para determinar si se ingreso el operando Dos
+/// @param numeroUno - el operando Uno
+/// @param numeroDos - el operando Dos
+void MostrarMenu(char flagIngresoOperandoUno, char flagIngresoOperandoDos, float numeroUno, float numeroDos);
 
 
-/// @brief Pide al usuario ingresar la opcion elejida y la valida segun los parametros
+/// @brief Espera que el usuario presione la tecla Enter para continuar con la ejecucion
 ///
-/// @param minimo - rango minimo de las opciones posible
-/// @param maximo - rango maximo de las opciones posibles
-///
-/// @return opcion elejida por el usuario
-int PedirOpcion(int minimo, int maximo);
+void PresioneEnterParaContinuar(void);
 
 
 /// @brief Verifica si se puede calcular el factorial del numero recibido
@@ -33,7 +31,9 @@ int PedirOpcion(int minimo, int maximo);
 /// @param numero - el numero recibido a verificar
 ///
 /// @return 1 [si se puede calcular factorial] -  0 [si no es posible calcular el factorai]
-char PuedoCalcularFactorial(float numero);
+int PuedoCalcularFactorial(float numero);
+
+
 
 
 

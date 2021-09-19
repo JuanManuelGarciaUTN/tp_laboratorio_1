@@ -52,9 +52,10 @@ unsigned long Factorial(float numero)
 	unsigned long resultado;
 	resultado = 1;
 
-	for(;numero > 1; numero --)
+	while(numero > 1)
 	{
 		resultado *= numero;
+		numero--;
 	}
 
 	return resultado;

@@ -172,7 +172,7 @@ int printEmployees(Employee* list, int length)
 					printHeaderEmployeesArray();
 				}
 				flagArrayVacio = FALSE;
-				printf("%-4d %-30s %10.2f      %-3d\n", list[i].id, nombreYApellido, list[i].salary, list[i].sector);
+				printf("%-4d %-20s %-20s %11.2f      %-3d\n", list[i].id, list[i].name, list[i].lastName, list[i].salary, list[i].sector);
 			}
 		}
 	}
@@ -290,5 +290,5 @@ int isEmployeesEmpty(Employee* list, int length)
 
 void printHeaderEmployeesArray(void)
 {
-	printf("ID   Nombre y Apellido                 SALARIO      SECTOR\n\n");
+	printf("ID   Nombre               Apellido                SALARIO      SECTOR\n\n");
 }

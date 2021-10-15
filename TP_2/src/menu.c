@@ -158,9 +158,9 @@ void RealizarOpcionElejida(int opcionElejida, Employee listaEmployees[], int lon
 						break;
 					}
 					printf("No existe un empleado con el ID ingresado \n"
-							"	-> Ingrese 1 para volver a intentarlo \n"
-							"	-> Ingrese 2 para volver al Menu Principal \n");
-					PedirEnteroValidado("", "ERROR. Opcion ingresada inexistente\n", &opcionElejida, 1, 2);
+							"	1 -> Para volver a intentarlo \n"
+							"	2 -> Para volver al Menu Principal \n\n");
+					PedirEnteroValidado("Ingrese opcion: ", "ERROR. Opcion ingresada inexistente\n", &opcionElejida, 1, 2);
 
 				} while(opcionElejida != 2);
 			}

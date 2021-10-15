@@ -17,6 +17,7 @@
 
 
 /// @brief Le pide al usuario que ingrese un string y verifica que solo tenga letras o espacios
+/// 		Si es valido lo devuelve a traves de un puntero y si no le vuelve a pedir al usuario que ingrese un valor hasta que sea valido
 ///
 /// @param mensaje[] char - el mensaje que se le muestra al usuario
 /// @param mensajeError[] char - el mensaje que se le muestra al usuario si ingresa un dato invalido

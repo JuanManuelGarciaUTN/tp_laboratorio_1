@@ -4,10 +4,8 @@
 
 //Funciones propias
 int controller_showMenu(void);
-void controller_respuestaLoad(int respuesta);
-void controller_respuestaSave(int respuesta);
-void controller_respuestaSort(int respuesta);
-void controller_respuestaList(int respuesta);
+void controller_respuesta(int respuesta, int opcion);
+
 
 
 //Funciones que ya existian

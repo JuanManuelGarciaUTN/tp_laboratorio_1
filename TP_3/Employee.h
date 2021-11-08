@@ -34,6 +34,7 @@ int employee_getSueldo(Employee* this,int* sueldo);
 
 int employee_printWithId(Employee* this);
 int employee_printWithoutId(Employee* this);
+int employee_printIdAndName(Employee* this);
 
 int employee_sortByName(void* pPrimerEmpleado,void* pSegundoEmpleado);
 int employee_sortById(void* pPrimerEmpleado,void* pSegundoEmpleado);

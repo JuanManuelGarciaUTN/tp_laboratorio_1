@@ -37,16 +37,14 @@ int main()
         {
             case 1:
             	respuesta = controller_loadFromText("data.csv",listaEmpleados);
-            	controller_respuestaLoad(respuesta);
                 break;
 
             case 2:
             	respuesta = controller_loadFromBinary("data.bin",listaEmpleados);
-            	controller_respuestaLoad(respuesta);
                 break;
 
             case 3:
-                controller_addEmployee(listaEmpleados);
+            	respuesta = controller_addEmployee(listaEmpleados);
                 break;
 
             case 4:
@@ -59,27 +57,26 @@ int main()
 
             case 6:
             	respuesta = controller_ListEmployee(listaEmpleados);
-            	controller_respuestaList(respuesta);
                 break;
 
             case 7:
             	respuesta = controller_sortEmployee(listaEmpleados);
-            	controller_respuestaSort(respuesta);
                 break;
 
             case 8:
             	respuesta = controller_saveAsText("data.csv", listaEmpleados);
-                controller_respuestaSave(respuesta);
                 break;
 
             case 9:
             	respuesta = controller_saveAsBinary("data.bin",listaEmpleados);
-            	controller_respuestaSave(respuesta);
                 break;
 
             case 10:
                 break;
         }
+
+        controller_respuesta(respuesta, option);
+
     }while(option != 10);
 
     return 0;

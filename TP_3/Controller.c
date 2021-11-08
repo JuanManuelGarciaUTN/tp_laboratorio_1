@@ -4,7 +4,8 @@
 #include "Employee.h"
 #include "inputs.h"
 #include "parser.h"
-#include "informes.h"
+#include "nexoLinkedListAndEmployeee.h"
+#include "menu.h"
 
 
 
@@ -75,6 +76,10 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 int controller_addEmployee(LinkedList* pArrayListEmployee)
 {
     int seAgregoUnEmployee;
+    int nuevaId;
+    int horasTrabajadas;
+    int sueldo;
+    char nombre[LONGITUD_NOMBRE];
     Employee* pNuevoEmployee = NULL;
     seAgregoUnEmployee = -1;
 
@@ -84,11 +89,15 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
     	pNuevoEmployee = employee_new();
     	if(pNuevoEmployee != NULL)
     	{
+    		nuevaId = CreateNewId(pArrayListEmployee);
+    		PedirSustantivoPropio("Ingrese el nombre del empleado: ","ERROR. Solo puede ingresar letras y espacios\n" , nombre, LONGITUD_NOMBRE);
+    		PedirEnteroMayorQue("Ingrese el sueldo del empleado: ", "ERROR, debe ingresar un entero positivo\n", &sueldo , 0);
+    		PedirEnteroValidado("Ingrese las horas trabajadas empleado: ", "ERROR, valor invalido\n", &horasTrabajadas , 0, 350);
 
-    		employee_setId(pNuevoEmployee, 1000); //Place HOLDER
-    		employee_setHorasTrabajadas(pNuevoEmployee, 150);
-    		employee_setNombre(pNuevoEmployee, "PLACER HOLDER");
-    		employee_setSueldo(pNuevoEmployee, 1048596);
+    		employee_setId(pNuevoEmployee, nuevaId);
+    		employee_setHorasTrabajadas(pNuevoEmployee, horasTrabajadas);
+    		employee_setNombre(pNuevoEmployee, nombre);
+    		employee_setSueldo(pNuevoEmployee, sueldo);
 
     		ll_add(pArrayListEmployee, pNuevoEmployee);
     		seAgregoUnEmployee = 1;
@@ -118,7 +127,37 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_removeEmployee(LinkedList* pArrayListEmployee)
 {
-    return 1;
+	int existeAlMenosUno;
+	int cantiadEmpleados;
+	int numeroBaja;
+	int opcion;
+	Employee* pEmployeeBaja;
+
+	existeAlMenosUno = 0;
+
+	if(pArrayListEmployee != NULL && !ll_isEmpty(pArrayListEmployee))
+	{
+		existeAlMenosUno = 1;
+		PrintEmployeesWithPosition(pArrayListEmployee);
+		cantiadEmpleados = ll_len(pArrayListEmployee);
+		PedirEnteroValidado("Ingrese el numero del empleado a dar de baja: ", "ERROR. No existe dicho empleado, vuelva a intentarlo \n", &numeroBaja, 1, cantiadEmpleados);
+		printf("\nVa a dar de baja a: \n");
+		pEmployeeBaja = (Employee*)ll_get(pArrayListEmployee, numeroBaja-1);
+		employee_printIdAndName(pEmployeeBaja);
+		printf("\n¿Desea Continuar? \n\n"
+				"1. SI \n"
+				"2. NO, Ingresar Otro Empleado \n"
+				"3. NO, Volver Al Menu Principal \n\n");
+		PedirEnteroValidado("Ingrese Respuesta: ", "ERROR. Opcion Invalida \n", &opcion, 1, 3);
+
+		if(opcion == 1)
+		{
+			ll_remove(pArrayListEmployee, numeroBaja-1);
+			employee_delete(pEmployeeBaja);
+		}
+	}
+
+	return existeAlMenosUno;
 }
 
 /** \brief Listar empleados
@@ -137,12 +176,7 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
 	if(pArrayListEmployee != NULL && !ll_isEmpty(pArrayListEmployee))
 	{
 		existeAlMenosUno = 1;
-
-		printf("ID     Nombre                                   Horas   Sueldo \n\n");
 		PrintEmployeesWithId(pArrayListEmployee);
-
-		system("pause");
-		system("cls");
 	}
 
 	return existeAlMenosUno;
@@ -158,15 +192,20 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
 int controller_sortEmployee(LinkedList* pArrayListEmployee)
 {
 	int existeAlMenosUno;
+	int criterioOrdenamiento;
+	int tipoOrdenamiento;
+
 	existeAlMenosUno = 0;
     if(pArrayListEmployee != NULL && !ll_isEmpty(pArrayListEmployee))
     {
     	existeAlMenosUno = 1;
-    	printf("Ordenando la Lista, por favor espere... \n"
-    			"(Tiempo estimado 10 segundos)\n");
-    	ll_sort(pArrayListEmployee, employee_sortBySalaryAndName, 1);
+
+    	criterioOrdenamiento = PedirCriterioDeOrdenamiento();
+    	tipoOrdenamiento = PedirTipoDeOrdenamiento();
+
+    	SortEmployees(pArrayListEmployee, criterioOrdenamiento, tipoOrdenamiento);
+
     }
-    system("cls");
 
     return existeAlMenosUno;
 }
@@ -203,7 +242,7 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
     		}
     		else
     		{
-        		pEmployeeAuxiliar = ll_get(pArrayListEmployee, i);
+        		pEmployeeAuxiliar = (Employee*)ll_get(pArrayListEmployee, i);
         		employee_getId(pEmployeeAuxiliar, &id);
         		employee_getNombre(pEmployeeAuxiliar, nombre);
         		employee_getSueldo(pEmployeeAuxiliar, &sueldo);
@@ -241,7 +280,7 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 
     	for(int i=0; i<longitudLinkedList; i++)
     	{
-    		pEmployeeAuxiliar = ll_get(pArrayListEmployee, i);
+    		pEmployeeAuxiliar = (Employee*)ll_get(pArrayListEmployee, i);
     		fwrite(pEmployeeAuxiliar, sizeof(Employee), 1, pFile);
     	}
 
@@ -260,18 +299,7 @@ int controller_showMenu(void)
 {
 	int opcionElejida;
 
-	printf("    Menu: \n\n"
-     " 1. Cargar los datos de los empleados desde el archivo data.csv (modo texto).  \n"
-     " 2. Cargar los datos de los empleados desde el archivo data.csv (modo binario).  \n"
-     " 3. Alta de empleado  \n"
-     " 4. Modificar datos de empleado  \n"
-     " 5. Baja de empleado  \n"
-     " 6. Listar empleados  \n"
-     " 7. Ordenar empleados  \n"
-     " 8. Guardar los datos de los empleados en el archivo data.csv (modo texto).  \n"
-     " 9. Guardar los datos de los empleados en el archivo data.csv (modo binario).  \n"
-     "10. Salir \n\n");
-
+	MostrarMenuPrincipal();
 	PedirEnteroValidado("Ingrese la Opcion Elejida: ", "Error. Opcion Invalida\n", &opcionElejida, 1, 10);
 
 	system("cls");
@@ -280,76 +308,42 @@ int controller_showMenu(void)
 }
 
 
-/// @brief Recibe la respuesta de las funciones de carga desde archivo
-/// 		y muestra el mensaje correspondiente al usuario.
-///
-/// @param respuesta que se debe mostrar al usuario
-void controller_respuestaLoad(int respuesta)
+void controller_respuesta(int respuesta, int opcion)
 {
-	switch(respuesta)
+	switch(opcion)
 	{
 		case 1:
-			printf("Se Pudo Cargar la Lista de Empleados Correctamente \n\n");
+		case 2:
+			ReportLoad(respuesta);
 			break;
 
-		case 0:
-			printf("Se Cargo PARCIALMENTE la Lista de Empleados, Archivo con DATOS corruptos o invalidos \n\n");
+		case 3:
+			ReportAdd(respuesta);
 			break;
 
-		case -1:
-			printf("NO SE PUDO Cargar la Lista de Empleados, el Archivo esta VACIO\n\n");
+		case 4:
+			ReportRemove(respuesta);
 			break;
 
-		case -2:
-			printf("NO SE PUDO Cargar la Lista de Empleados, ya que fue cargarda previamente\n\n");
+		case 5:
+			ReportEdit(respuesta);
 			break;
 
-		case -3:
-			printf("ERROR. El Archivo NO Existe\n\n");
+		case 6:
+			ReportList(respuesta);
+			break;
+
+		case 7:
+			ReportSort(respuesta);
+			break;
+
+		case 8:
+		case 9:
+			ReportSave(respuesta);
 			break;
 	}
 }
 
-/// @brief Recibe la respuesta de las funciones de guardado a archivo
-/// 		y muestra el mensaje correspondiente al usuario.
-///
-/// @param respuesta que se debe mostrar al usuario
-void controller_respuestaSave(int respuesta)
-{
-	switch(respuesta)
-	{
-		case 1:
-			printf("Se Guardo la Lista de Empleados CORRECTAMENTE en el Archivo\n\n");
-			break;
 
-		case 0:
-			printf("NO SE PUDO Guardar la Lista de Empleados en el Archivo\n\n");
-			break;
-	}
-}
-
-void controller_respuestaSort(int respuesta)
-{
-	switch(respuesta)
-	{
-		case 1:
-			printf("Se Ordeno la Lista de Empleados CORRECTAMENTE\n\n");
-			break;
-
-		case 0:
-			printf("NO SE PUDO Ordenar la Lista de Empleados, Ya Que Esta VACIA\n\n");
-			break;
-	}
-}
-
-void controller_respuestaList(int respuesta)
-{
-	switch(respuesta)
-	{
-		case 0:
-			printf("NO SE PUDO Mostar la Lista de Empleados, Ya Que Esta VACIA\n\n");
-			break;
-	}
-}
 
 

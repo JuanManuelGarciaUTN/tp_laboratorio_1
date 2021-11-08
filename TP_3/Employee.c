@@ -205,6 +205,24 @@ int employee_printWithoutId(Employee* this)
 	return existe;
 }
 
+int employee_printIdAndName(Employee* this)
+{
+	int existe;
+	char nombre[LONGITUD_NOMBRE];
+	int id;
+
+	existe = 0;
+	if(this != NULL)
+	{
+		employee_getNombre(this, nombre);
+		employee_getId(this, &id);
+		existe = 1;
+		printf("ID: %d  Nombre: %s\n", id, nombre);
+	}
+
+	return existe;
+}
+
 
 int employee_sortByName(void* pPrimerEmpleado,void* pSegundoEmpleado)
 {

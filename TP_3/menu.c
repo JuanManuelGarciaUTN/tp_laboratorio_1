@@ -11,14 +11,14 @@ void MostrarMenuPrincipal()
 {
 	printf("    Menu: \n\n"
 		   " 1. Cargar los datos de los empleados desde el archivo data.csv (modo texto).  \n"
-		   " 2. Cargar los datos de los empleados desde el archivo data.csv (modo binario).  \n"
+		   " 2. Cargar los datos de los empleados desde el archivo data.bin (modo binario).  \n"
 		   " 3. Alta de empleado  \n"
 		   " 4. Modificar datos de empleado  \n"
 		   " 5. Baja de empleado  \n"
 		   " 6. Listar empleados  \n"
 		   " 7. Ordenar empleados  \n"
 		   " 8. Guardar los datos de los empleados en el archivo data.csv (modo texto).  \n"
-		   " 9. Guardar los datos de los empleados en el archivo data.csv (modo binario).  \n"
+		   " 9. Guardar los datos de los empleados en el archivo data.bin (modo binario).  \n"
 		   "10. Salir \n\n");
 }
 
@@ -39,6 +39,19 @@ int PedirCriterioDeOrdenamiento()
 	return criterio;
 }
 
+int PedirGuardarAntesDeSalir()
+{
+	int criterio;
+
+	printf("    ¿Desea Guardar Antes de Salir?: \n\n"
+		   "1. SI \n"
+		   "2. NO \n\n");
+
+	PedirEnteroValidado("Ingrese Respuesta: ", "ERROR. Opcion Invalida \n", &criterio, 1, 2);
+
+	return criterio;
+}
+
 int PedirTipoDeOrdenamiento()
 {
 	int tipo;
@@ -47,14 +60,31 @@ int PedirTipoDeOrdenamiento()
 		   "0. Descendente \n"
 		   "1. Ascendente \n\n");
 
-	PedirEnteroValidado("Ingrese el respuesta: ", "ERROR. Opcion Invalida \n", &tipo, 0, 1);
+	PedirEnteroValidado("Ingrese la respuesta: ", "ERROR. Opcion Invalida \n", &tipo, 0, 1);
 
 	return tipo;
 }
 
 
+int PedirSiDeseaSobreescribirEnCarga()
+{
+	int sobrecargar;
+
+	printf("    Ya hay datos cargados \n"
+			    "¿Desea Sobrescribirlos \n\n"
+		   "1. SI \n"
+		   "2. NO \n\n");
+
+	PedirEnteroValidado("Ingrese la respuesta: ", "ERROR. Opcion Invalida \n", &sobrecargar, 1, 2);
+
+	return sobrecargar;
+}
+
+
 void ReportLoad(int respuesta)
 {
+	system("cls");
+
 	switch(respuesta)
 	{
 		case 1:
@@ -67,10 +97,6 @@ void ReportLoad(int respuesta)
 
 		case -1:
 			printf("NO SE PUDO Cargar la Lista de Empleados, el Archivo esta VACIO\n\n");
-			break;
-
-		case -2:
-			printf("NO SE PUDO Cargar la Lista de Empleados, ya que fue cargarda previamente\n\n");
 			break;
 
 		case -3:
@@ -137,12 +163,36 @@ void ReportAdd(int respuesta)
 
 void ReportRemove(int respuesta)
 {
+	system("cls");
+	switch(respuesta)
+	{
+		case 1:
+			printf("Se dio BAJA al empleado Correctamente \n\n");
+			break;
 
+		case -1:
+			printf("NO SE PUEDE dar Baja un empleado, Ya que la Lista esta VACIA \n\n");
+			break;
+	}
 }
 
 void ReportEdit(int respuesta)
 {
+	system("cls");
+	switch(respuesta)
+	{
+		case -1:
+			printf("NO SE PUEDE dar Modificar un empleado, Ya que la Lista esta VACIA \n\n");
+			break;
 
+		case 0:
+			printf("NO se Modifico la Lista \n\n");
+			break;
+
+		case 1:
+			printf("Se Modifico la Lista CORRECTAMENTE \n\n");
+			break;
+	}
 }
 
 void PresioneEnterParaContinuar(void)

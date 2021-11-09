@@ -3,9 +3,9 @@
 
 /** \brief Parsea los datos los datos de los empleados desde el archivo data.csv (modo texto).
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
+ * \param pFile FILE* puntero a Archivo de texto
+ * \param pArrayListEmployee LinkedList* - LinkedList donde se guardaron los empleados del archivo
+ * \return int -1[el Archivo esta VACIO] - 0[Se cargo PARTE de los datos, archivo corrupto] - 1[Se cargaron TODOS los datos]
  *
  */
 int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
@@ -41,25 +41,20 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 
 /** \brief Parsea los datos los datos de los empleados desde el archivo data.csv (modo binario).
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
+ * \param pFile FILE* puntero a Archivo binario
+ * \param pArrayListEmployee LinkedList* - LinkedList donde se guardaron los empleados del archivo
+* \return int -1[el Archivo esta VACIO] - 0[Se cargo PARTE de los datos, archivo corrupto] - 1[Se cargaron TODOS los datos]
  *
  */
 int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
 {
 	int seAgregaronCorrectamente;
-	int i = 0;
-	int id;
-	char nombre[LONGITUD_NOMBRE];
-	int sueldo;
-	int horas;
 	Employee* pNewEmployee;
 
 	seAgregaronCorrectamente = -1;
+
 	while(!feof(pFile))
 	{
-		i++;
 		seAgregaronCorrectamente = 1 && seAgregaronCorrectamente != 0;
 
 		pNewEmployee = employee_new();
@@ -68,12 +63,7 @@ int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
 		{
 			if(fread(pNewEmployee, sizeof(Employee), 1, pFile) == 1)
 			{
-				employee_getId(pNewEmployee, &id);
-				employee_getNombre(pNewEmployee, nombre);
-				employee_getSueldo(pNewEmployee, &sueldo);
-				employee_getHorasTrabajadas(pNewEmployee, &horas);
-
-				if(VerificarCargaBinaria(horas))
+				if(VerificarCargaBinaria(pNewEmployee))
 				{
 					ll_add(pArrayListEmployee, pNewEmployee);
 				}
@@ -81,7 +71,6 @@ int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
 				{
 
 					employee_delete(pNewEmployee);
-					printf("%d\n\n", i);
 					seAgregaronCorrectamente = 0;
 				}
 			}
@@ -95,12 +84,24 @@ int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
 	return seAgregaronCorrectamente;
 }
 
-int VerificarCargaBinaria(int horas)
+
+
+/** \brief Verifica que se cargara correctamente un Employee
+ *
+ * \param pNewEmployee Employee* puntero a un employee a verificar
+* \return int 1[Datos Validos] - 0[Datos Invalidos]
+ *
+ */
+int VerificarCargaBinaria(Employee* pNewEmployee)
 {
 	int cargaCorrecta;
+	int horas;
+	int sueldo;
+	int id;
 	cargaCorrecta = 0;
 
-	if(horas < 500)
+	if(employee_getId(pNewEmployee, &id) && employee_getHorasTrabajadas(pNewEmployee, &horas) && employee_getSueldo(pNewEmployee, &sueldo) &&
+			id > 0 && horas > 0 && horas <500 && sueldo > -1)
 	{
 		cargaCorrecta = 1;
 	}

@@ -434,3 +434,116 @@ int employee_sortByWorkTimeAndName(void* pPrimerEmpleado,void* pSegundoEmpleado)
 	return retorno;
 }
 
+int employee_edit(Employee* this)
+{
+	int seModifico;
+	int campoAModificar;
+	seModifico = 0;
+
+	if(this != NULL)
+	{
+		printf("¿Que desea Modificar? \n\n"
+				"1. Nombre \n"
+				"2. Salario \n"
+				"3. Horas Trabajadas \n"
+				"4. NADA \n\n");
+		PedirEnteroValidado("Ingrese campo a modificar: ", "ERROR. valor invalido \n\n", &campoAModificar, 1, 4);
+
+		switch(campoAModificar)
+		{
+			case 1:
+				seModifico = employee_editName(this);
+				break;
+
+			case 2:
+				seModifico = employee_editSalary(this);
+				break;
+
+			case 3:
+				seModifico = employee_editWorkTime(this);
+				break;
+		}
+	}
+
+	return seModifico;
+}
+
+int employee_editName(Employee* this)
+{
+	int seModifico;
+	int respuesta;
+	char nombre[LONGITUD_NOMBRE];
+
+	if(this != NULL)
+	{
+		seModifico = 0;
+		PedirSustantivoPropio("Ingrese el nuevo nombre: ", "ERROR. Solo puede ingresar letras y espacios\n", nombre, LONGITUD_NOMBRE);
+		respuesta = PreguntarSiDeseaSobrescribir();
+
+		if(respuesta == 1)
+		{
+			employee_setNombre(this, nombre);
+			seModifico = 1;
+		}
+	}
+
+	return seModifico;
+}
+
+int employee_editSalary(Employee* this)
+{
+	int seModifico;
+	int respuesta;
+	int salario;
+
+	seModifico = 0;
+
+	if(this != NULL)
+	{
+		PedirEnteroMayorQue("Ingrese nuevo salario: ", "ERROR. Ingrese un numero entero positivo \n", &salario, 0);
+		respuesta = PreguntarSiDeseaSobrescribir();
+
+		if(respuesta == 1)
+		{
+			employee_setSueldo(this, salario);
+			seModifico = 1;
+		}
+	}
+
+	return seModifico;
+}
+
+int employee_editWorkTime(Employee* this)
+{
+	int seModifico;
+	int respuesta;
+	int horasTrabajadas;
+
+	seModifico = 0;
+
+	if(this != NULL)
+	{
+		PedirEnteroValidado("Ingrese nueva cantidad de horas trabajadas: ", "ERROR. Ingrese un numero entero positivo \n", &horasTrabajadas, 0, 350);
+		respuesta = PreguntarSiDeseaSobrescribir();
+
+		if(respuesta == 1)
+		{
+			employee_setHorasTrabajadas(this, horasTrabajadas);
+			seModifico = 1;
+		}
+	}
+
+	return seModifico;
+}
+
+int PreguntarSiDeseaSobrescribir()
+{
+	int deseaSobrescribir;
+	printf("\n¿Desea Sobrescribir? \n\n"
+			"1. SI \n"
+			"2. NO \n\n");
+	PedirEnteroValidado("Ingrese respuesta: ", "ERROR. Valor invalido\n", &deseaSobrescribir, 1, 2);
+
+	return deseaSobrescribir;
+}
+

@@ -5,6 +5,7 @@
 //Funciones propias
 int controller_showMenu(void);
 void controller_respuesta(int respuesta, int opcion);
+void controller_exitProgram(LinkedList* pArrayListEmployee);
 
 
 

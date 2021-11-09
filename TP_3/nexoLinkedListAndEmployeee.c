@@ -123,18 +123,36 @@ int FindMaxId(LinkedList* pArrayListEmployee, int* maxIdRetorno)
 	return existeAlMenosUno;
 }
 
-int CreateNewId(LinkedList* pArrayListEmployee)
+int CreateNewId(char* pathArchivoIds)
 {
 	int nuevaId;
+	FILE* archivoId = fopen(pathArchivoIds, "r");
 
-	if(FindMaxId(pArrayListEmployee, &nuevaId))
+	if(archivoId != NULL)
 	{
+		fscanf(archivoId, "%d", &nuevaId);
 		nuevaId++;
-	}
-	else
-	{
-		nuevaId = 1;
+		fclose(archivoId);
+
+		archivoId = fopen(pathArchivoIds, "w");
+		fprintf(archivoId, "%d", nuevaId);
+		fclose(archivoId);
 	}
 
 	return nuevaId;
+}
+
+void VaciarLista(LinkedList* pArrayListEmployee)
+{
+	int longitud;
+
+	if(pArrayListEmployee)
+	{
+		longitud = ll_len(pArrayListEmployee);
+
+		for(int i=0; i<longitud; i++)
+		{
+			employee_delete(ll_pop(pArrayListEmployee, 0));
+		}
+	}
 }

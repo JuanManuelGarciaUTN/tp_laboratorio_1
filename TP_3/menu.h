@@ -16,19 +16,32 @@
 ///
 void MostrarMenuPrincipal();
 
+
 /// @brief Le muestra al usuario los distintos Criterios de ordenamiento
 /// 		y le pide que ingrese el que desea usar
 ///
 /// @return int - criterio de ordenamiento ingresado
 int PedirCriterioDeOrdenamiento();
 
+
 /// @brief Le muestra al usuario el tipo de Ordenamiento Ascendente o Descendente
 /// 		y le pide que ingrese el que desea usar
+///
 /// @return int - 0[Descendente] - 1[Ascendente]
 int PedirTipoDeOrdenamiento();
 
+
+/// @brief Le pregunta al usuario si desea sobrescribir los datos, cuando ya fueron cargados previamente
+/// 		y le pide que ingrese la respuesta
+///
+/// @return 1[el usuario ingreso que SI] - 2[el usuario ingreso que NO]
 int PedirSiDeseaSobreescribirEnCarga();
 
+
+/// @brief Le pregunta al usuario si desea guardar antes de salir del programa
+/// 		y le pide que ingrese la respuesta
+///
+/// @return 1[el usuario ingreso que SI] - 2[el usuario ingreso que NO]
 int PedirGuardarAntesDeSalir();
 
 /// @brief Recibe la respuesta de las funciones de carga desde archivo

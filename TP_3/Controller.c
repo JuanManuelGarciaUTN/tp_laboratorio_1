@@ -375,6 +375,10 @@ int controller_showMenu(void)
 	return opcionElejida;
 }
 
+
+/// @brief Pregunta al usuario si desea guardar los datos a un archivo antes de salir del programa
+///
+/// @param pArrayListEmployee LinkedList* - puntero a LinkedList que tiene los datos
 void controller_exitProgram(LinkedList* pArrayListEmployee)
 {
 	int opcionElejida;

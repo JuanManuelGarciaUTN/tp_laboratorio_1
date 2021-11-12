@@ -55,6 +55,10 @@ int FindMaxId(LinkedList* pArrayListEmployee, int* maxIdRetorno);
 /// @return 1[La LinkedList esta vacía] - nuevo ID maximo[si existe al menos un employee, devuelve un nuevo ID]
 int CreateNewId(char* pathArchivoIds);
 
+
+/// @brief Vacia todos los elementos de la LinkedList y los elimina
+///
+/// @param pArrayListEmployee LinkedList* - puntero a linked list a vaciar
 void VaciarLista(LinkedList* pArrayListEmployee);
 
 

@@ -86,7 +86,7 @@ int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
 
 
 
-/** \brief Verifica que se cargara correctamente un Employee
+/** \brief Verifica que se cargara correctamente un Employee con carga Binaria desde archivo
  *
  * \param pNewEmployee Employee* puntero a un employee a verificar
 * \return int 1[Datos Validos] - 0[Datos Invalidos]

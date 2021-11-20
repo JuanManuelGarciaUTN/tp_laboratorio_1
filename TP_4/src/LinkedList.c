@@ -155,7 +155,12 @@ int ll_add(LinkedList* this, void* pElement)
 {
     int returnAux;
 
-    returnAux = addNode(this, ll_len(this), pElement);
+    returnAux = -1;
+
+    if(this != NULL)
+    {
+    	returnAux = addNode(this, ll_len(this), pElement);
+    }
 
     return returnAux;
 }
@@ -173,12 +178,15 @@ void* ll_get(LinkedList* this, int index)
     void* returnAux = NULL;
     Node* pNode;
 
-	pNode = getNode(this, index);
+    if(this != NULL && index > -1 && index < ll_len(this))
+    {
+    	pNode = getNode(this, index);
 
-	if(pNode != NULL)
-	{
-		returnAux = pNode->pElement;
-	}
+    	if(pNode != NULL)
+    	{
+    		returnAux = pNode->pElement;
+    	}
+    }
 
     return returnAux;
 }
@@ -200,12 +208,15 @@ int ll_set(LinkedList* this, int index,void* pElement)
 
     returnAux = -1;
 
-	pNodeAux = getNode(this, index);
-	if(pNodeAux != NULL)
-	{
-		pNodeAux->pElement = pElement;
-		returnAux = 0;
-	}
+    if(this != NULL && index > -1 && index < ll_len(this))
+    {
+    	pNodeAux = getNode(this, index);
+    	if(pNodeAux != NULL)
+    	{
+    		pNodeAux->pElement = pElement;
+    		returnAux = 0;
+    	}
+    }
 
     return returnAux;
 }
@@ -296,10 +307,13 @@ int ll_deleteLinkedList(LinkedList* this)
 
     returnAux = -1;
 
-    if(ll_clear(this) == 0)
+    if(this != NULL)
     {
-    	free(this);
-    	returnAux = 0;
+        if(ll_clear(this) == 0)
+        {
+        	free(this);
+        	returnAux = 0;
+        }
     }
 
     return returnAux;
@@ -378,9 +392,12 @@ int ll_push(LinkedList* this, int index, void* pElement)
     int returnAux;
     returnAux = -1;
 
-    if(addNode(this, index, pElement) == 0)
+    if(this != NULL && index > -1 && index <= ll_len(this))
     {
-    	returnAux = 0;
+        if(addNode(this, index, pElement) == 0)
+        {
+        	returnAux = 0;
+        }
     }
 
     return returnAux;
@@ -399,8 +416,11 @@ void* ll_pop(LinkedList* this,int index)
 {
     void* returnAux = NULL;
 
-    returnAux = ll_get(this, index);
-    ll_remove(this, index);
+    if(this != NULL && index > -1 && index < ll_len(this))
+    {
+        returnAux = ll_get(this, index);
+        ll_remove(this, index);
+    }
 
     return returnAux;
 }
@@ -422,7 +442,12 @@ int ll_contains(LinkedList* this, void* pElement)
 
     if(this != NULL)
     {
-    	returnAux = ll_indexOf(this, pElement) != -1;
+    	returnAux = 0;
+
+    	if(ll_indexOf(this, pElement) != -1)
+    	{
+    		returnAux = 1;
+    	}
     }
 
     return returnAux;
@@ -482,7 +507,7 @@ LinkedList* ll_subList(LinkedList* this,int from,int to)
 
     	if(cloneArray != NULL)
     	{
-    		for(int i=from; i<=to; i++)
+    		for(int i=from; i<to; i++)
     		{
     			ll_add(cloneArray, ll_get(this, i));
     		}
@@ -504,7 +529,10 @@ LinkedList* ll_clone(LinkedList* this)
 {
     LinkedList* cloneArray = NULL;
 
-    cloneArray = ll_subList(this, 0, ll_len(this));
+    if(this != NULL)
+    {
+    	cloneArray = ll_subList(this, 0, ll_len(this));
+    }
 
     return cloneArray;
 }
@@ -567,5 +595,75 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 
     return returnAux;
 }
+
+
+/* Hice un insertion sort,
+ * pero al probarla es mas lenta que el burbujeo
+ * porque llama demasiado a la funcion getNode()
+ * y es necesario recorrer hacia atras la linked list,
+ * asi que no pude evitar usar getNode()
+ * pero lo deje aca por las dudas
+
+int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
+{
+    int returnAux;
+
+    int longitud;
+    int criterio;
+    int j;
+
+    void* key;
+    Node* pNodeUno;
+    Node* pNodeDos;
+	Node* pNodeTres;
+	Node* pNodeCuatro;
+
+    returnAux = -1;
+    criterio = -1;
+
+    if(this != NULL && pFunc != NULL && (order == 1 || order == 0))
+    {
+    	longitud = ll_len(this);
+
+    	if(order == 1)
+    	{
+    		criterio = 1;
+    	}
+
+		pNodeUno = this->pFirstNode;
+		pNodeCuatro = pNodeUno;
+
+		for (int i = 1; i < longitud; i++)
+		{
+			pNodeUno = pNodeUno->pNextNode;
+
+			key = pNodeUno->pElement;
+			j = i - 1;
+
+			pNodeDos = pNodeCuatro;
+
+			while (j >= 0 && pFunc(pNodeDos->pElement, key) == criterio)
+			{
+				pNodeTres = pNodeDos->pNextNode;
+
+				pNodeTres->pElement = pNodeDos->pElement;
+
+				j -= 1;
+
+				pNodeDos = getNode(this, j);
+			}
+
+			pNodeDos = getNode(this, j+1);
+
+			pNodeDos->pElement = key;
+
+			pNodeCuatro = pNodeCuatro->pNextNode;
+		}
+
+    	returnAux = 0;
+    }
+
+    return returnAux;
+}*/
 
 
